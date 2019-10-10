@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "772678347317",
+    "firebase_url": "https://ecarma-65b5c.firebaseio.com",
+    "project_id": "ecarma-65b5c",
+    "storage_bucket": "ecarma-65b5c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772678347317:android:60461fc56b622f295d9f7c",
+        "android_client_info": {
+          "package_name": "com.apartment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "772678347317-iontjaa7uo0vrjit8ieu65eah26jj9am.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfv3K3HH7TBpH4XMgmtxxi7lbM9xhSoyE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "772678347317-iontjaa7uo0vrjit8ieu65eah26jj9am.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

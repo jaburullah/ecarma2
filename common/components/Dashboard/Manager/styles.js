@@ -1,0 +1,45 @@
+import { StyleSheet } from 'react-native';
+export default StyleSheet.create({
+  parent: { flex: 1 },
+  headerTitleRow: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  headerTitle: { fontSize: 18, fontWeight: 'bold' },
+  headerSubTitleRow: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  headerSubTitle: { fontSize: 16, fontWeight: 'normal', fontStyle: 'italic' },
+  taskContainer: { flex: 4, flexDirection: 'row' },
+  taskLodingContainer: {
+    flex: 4,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  taskCountContainer: { flex: 4, justifyContent: 'center', alignItems: 'center' },
+  taskCount: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 150,
+    width: 150,
+    borderRadius: 75,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#FFEA90',
+    backgroundColor: '#FFFFCC',
+  },
+  taskTextCount: { fontSize: 40, fontWeight: 'bold' },
+  taskTextTitle: { fontSize: 15, fontWeight: 'normal' },
+  taskSmileyParentContainer: { flex: 5, flexDirection: 'row' },
+  taskSmileyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  taskSmiley: { height: 80, width: 80 },
+  taskSmileyText: { marginTop: 10, fontSize: 18 },
+});
