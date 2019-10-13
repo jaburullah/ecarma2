@@ -173,7 +173,7 @@ export const model = m => {
       _model = null;
     },
     getApartmentID: () => {
-      return _model.apartmentID;
+      return _model.apartmentID[0];
     }
   };
   return session;

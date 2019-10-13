@@ -18,6 +18,7 @@ import SecretaryDashboard from './common/components/Dashboard/Secretary/Secretar
 import ManagerDashboard from './common/components/Dashboard/Manager/ManagerDashboard';
 
 import CreateTicket from './common/components/Ticket/Create/CreateTicket';
+import ViewTicket from './common/components/Ticket/View/ViewTicket';
 
 import SecretaryTaskView from './common/components/Task/View/Secretary/SecretaryTaskView';
 import ManagerTaskView from './common/components/Task/View/Manager/ManagerTaskView';
@@ -112,6 +113,10 @@ const AppNavigator = createStackNavigator({
   },
   ticket: {
     screen: CreateTicket,
+    navigationOptions: navigationOptions,
+  },
+  ticket_view: {
+    screen: ViewTicket,
     navigationOptions: navigationOptions,
   },
   secretary_task_view: {

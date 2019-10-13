@@ -5,6 +5,11 @@ import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 
 import ApartmentTab from './ApartmentTab';
 
+import firebase from 'react-native-firebase';
+
+
+
+console.log('createMaterialTopTabNavigator');
 const ManagerTaskView = createMaterialTopTabNavigator(
   {
     sobha: ApartmentTab,
