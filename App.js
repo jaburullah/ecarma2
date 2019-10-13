@@ -13,9 +13,13 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 
 import Login from './common/components/Login/Login';
+
 import SecretaryDashboard from './common/components/Dashboard/Secretary/SecretaryDashboard';
 import ManagerDashboard from './common/components/Dashboard/Manager/ManagerDashboard';
+
 import CreateTicket from './common/components/Ticket/Create/CreateTicket';
+
+import SecretaryTaskView from './common/components/Task/View/Secretary/SecretaryTaskView';
 import ManagerTaskView from './common/components/Task/View/Manager/ManagerTaskView';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -94,20 +98,24 @@ const transitionConfig = () => {
 
 
 const AppNavigator = createStackNavigator({
-  // login: {
-  //   screen: Login,
-  //   navigationOptions: navigationOptions
-  // },
-  // secretary_dashboard: {
-  //   screen: SecretaryDashboard,
-  //   navigationOptions: navigationOptions,
-  // },
+  login: {
+    screen: Login,
+    navigationOptions: navigationOptions
+  },
+  secretary_dashboard: {
+    screen: SecretaryDashboard,
+    navigationOptions: navigationOptions,
+  },
   manager_dashboard: {
     screen: ManagerDashboard,
     navigationOptions: navigationOptions,
   },
   ticket: {
     screen: CreateTicket,
+    navigationOptions: navigationOptions,
+  },
+  secretary_task_view: {
+    screen: SecretaryTaskView,
     navigationOptions: navigationOptions,
   },
   manager_task_view: {

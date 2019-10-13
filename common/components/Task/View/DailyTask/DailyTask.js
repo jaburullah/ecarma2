@@ -53,17 +53,17 @@ const DailyTask = ({ navigation, data, isLoading, isRefreshing, retrieveMore }) 
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 9 }}>{getView()}</View>
-      {appModel.isSecretary() && (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Button
-            title="Create New Ticket"
-            color="#DCA50F"
-            onPress={() => {
-              navigation.navigate('ticket');
-            }}
-          />
-        </View>
-      )}
+
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Button
+          title="Create New Ticket"
+          color="#DCA50F"
+          onPress={() => {
+            navigation.navigate('ticket');
+          }}
+        />
+      </View>
+
     </View>
   );
 };

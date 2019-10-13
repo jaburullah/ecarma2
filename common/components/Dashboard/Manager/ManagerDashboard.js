@@ -84,11 +84,11 @@ const ManagerDashboard = ({ navigation }) => {
 
   Promise.all([ticketsRef.get(), dailyTasksRef.get(), weeklyTasksRef.get(), monthlyTasksRef.get()])
     .then((data) => {
-      let tickets = separateTickets(data[0]._docs, 'tickets'),
-        dailyTasks = separateTickets(data[0]._docs, 'daily'),
-        weeklyTasks = separateTickets(data[1]._docs, 'weekly'),
-        monthlyTasks = separateTickets(data[2]._docs, 'monthly');
-      setState(c => ({ tickets: [tickets, dailyTasks, weeklyTasks, monthlyTasks], isLoading: false }));
+      const titles = ['tickets', 'daily', 'weekly', 'monthly']
+      let dd = data.map((d, i) => {
+        return separateTickets(d._docs, titles[i]);
+      });
+      setState(c => ({ tickets: dd, isLoading: false }));
     })
     .catch(e => console.log(e));
 
@@ -136,7 +136,7 @@ const ManagerDashboard = ({ navigation }) => {
   return (
     <ScrollView style={styles.parent}>
       <View style={styles.headerTitleRow}>
-        <Text style={styles.headerTitle}>DASHBOARD</Text>
+        <Text style={styles.headerTitle}>DASHBOARD - MANAGER</Text>
       </View>
       <View style={styles.headerSubTitleRow}>
         <Text style={styles.headerSubTitle}>Task View</Text>

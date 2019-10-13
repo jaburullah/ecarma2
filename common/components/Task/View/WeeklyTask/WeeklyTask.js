@@ -49,15 +49,15 @@ const Weekly = ({ navigation, data, isLoading, isRefreshing, retrieveMore }) => 
     <View style={{ flex: 1 }}>
       <View style={{ flex: 9 }}>{getView()}</View>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        {appModel.isSecretary() && (
-          <Button
-            title="Create New Ticket"
-            color="#DCA50F"
-            onPress={() => {
-              navigation.navigate('ticket');
-            }}
-          />
-        )}
+
+        <Button
+          title="Create New Ticket"
+          color="#DCA50F"
+          onPress={() => {
+            navigation.navigate('ticket');
+          }}
+        />
+
       </View>
     </View>
   );
