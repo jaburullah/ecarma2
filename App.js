@@ -15,7 +15,7 @@ import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import Login from './common/components/Login/Login';
 import SecretaryDashboard from './common/components/Dashboard/Secretary/SecretaryDashboard';
 import ManagerDashboard from './common/components/Dashboard/Manager/ManagerDashboard';
-import CreateTask from './common/components/Task/Create/CreateTask';
+import CreateTicket from './common/components/Ticket/Create/CreateTicket';
 import ManagerTaskView from './common/components/Task/View/Manager/ManagerTaskView';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -94,20 +94,20 @@ const transitionConfig = () => {
 
 
 const AppNavigator = createStackNavigator({
-  login: {
-    screen: Login,
-    navigationOptions: navigationOptions
-  },
-  secretary_dashboard: {
-    screen: SecretaryDashboard,
-    navigationOptions: navigationOptions,
-  },
+  // login: {
+  //   screen: Login,
+  //   navigationOptions: navigationOptions
+  // },
+  // secretary_dashboard: {
+  //   screen: SecretaryDashboard,
+  //   navigationOptions: navigationOptions,
+  // },
   manager_dashboard: {
     screen: ManagerDashboard,
     navigationOptions: navigationOptions,
   },
-  task: {
-    screen: CreateTask,
+  ticket: {
+    screen: CreateTicket,
     navigationOptions: navigationOptions,
   },
   manager_task_view: {
@@ -122,8 +122,8 @@ const AppNavigator = createStackNavigator({
 
 
 const Navigator = createAppContainer(AppNavigator);
-const AppModel = model({ roles: [] });
-// const AppModel = model({ roles: ['manager'] });
+// const AppModel = model({ roles: [] });
+const AppModel = model({ roles: ['manager'] });
 // const AppModel = model({ roles: ['secretary'] });
 
 const App = () => {

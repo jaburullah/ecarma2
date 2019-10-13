@@ -13,8 +13,8 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   headerSubTitle: { fontSize: 16, fontWeight: 'normal', fontStyle: 'italic' },
-  taskContainer: { flex: 4, flexDirection: 'row' },
-  taskLodingContainer: {
+  taskContainer: { flex: 4, flexDirection: 'row', marginBottom: 10 },
+  taskLoadingContainer: {
     flex: 4,
     flexDirection: 'row',
     justifyContent: 'center',

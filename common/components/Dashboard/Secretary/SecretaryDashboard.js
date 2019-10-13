@@ -6,15 +6,15 @@ import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 
 import styles from './styles';
 
-import Daily from '../../Daily/Daily';
-import Weekly from '../../Weekly/Weekly';
-import Monthly from '../../Monthly/Monthly';
+import DailyTask from '../../Task/View/DailyTask/DailyTask';
+import WeeklyTask from '../../Task/View/WeeklyTask/WeeklyTask';
+import MonthlyTask from '../../Task/View/MonthlyTask/MonthlyTask';
 
 const SecretaryDashboard = createMaterialTopTabNavigator(
   {
-    daily: Daily,
-    weekly: Weekly,
-    monthly: Monthly,
+    daily: DailyTask,
+    weekly: WeeklyTask,
+    monthly: MonthlyTask,
   },
   {
     lazy: true,

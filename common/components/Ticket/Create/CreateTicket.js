@@ -18,7 +18,8 @@ import { DailyItems, WeeklyItems, MonthlyItems } from '../../../model/model';
 
 import firebase from 'react-native-firebase';
 
-const CreateTask = () => {
+const CreateTicket = ({ navigation }) => {
+  model = navigation.getScreenProps();
   const options = {
     title: 'Select Avatar',
     takePhotoButtonTitle: 'Take a photo',
@@ -118,7 +119,7 @@ const CreateTask = () => {
     });
   };
 
-  const onCreateTask = () => {
+  const onCreateTicket = () => {
     onChangePeriod({ name: 'daily' });
     setDescription('');
     let f = categoryList.find((o) => {
@@ -133,29 +134,34 @@ const CreateTask = () => {
         }
       }
     });
-    const newTask = { title: f.title, status: 'Assigned', name: category || categoryList[0].name, description, review: '', userID: 1, createdDate: new Date(), modifiedDate: new Date(), apartmentID: 1 }
-    if (selectedPeriod === 'daily') {
-      const dailyTickets = firebase.firestore().collection('dailyTickets');
-      dailyTickets.add(newTask).then((doc) => {
-        console.log(doc)
-        ToastAndroid.show('Ticket created successfully', ToastAndroid.SHORT);
-      });
-    }
-    else if (selectedPeriod === 'weekly') {
-      const dailyTickets = firebase.firestore().collection('weeklyTickets');
-      dailyTickets.add(newTask).then((doc) => {
-        console.log(doc)
-        ToastAndroid.show('Ticket created successfully', ToastAndroid.SHORT);
-      });
-    }
-    else if (selectedPeriod === 'monthly') {
-      const dailyTickets = firebase.firestore().collection('monthlyTickets');
-      dailyTickets.add(newTask).then((doc) => {
-        console.log(doc)
-        ToastAndroid.show('Ticket created successfully', ToastAndroid.SHORT);
-      });
-    }
+    // const newTicket = { title: f.title, status: 'Assigned', name: category || categoryList[0].name, description, review: '', userID: 1, createdDate: new Date(), modifiedDate: new Date(), apartmentID: model.getApartmentID() }
+    // if (selectedPeriod === 'daily') {
+    //   const dailyTickets = firebase.firestore().collection('dailyTasks');
+    //   dailyTickets.add(newTicket).then((doc) => {
+    //     console.log(doc)
 
+    //   });
+    // }
+    // else if (selectedPeriod === 'weekly') {
+    //   const dailyTickets = firebase.firestore().collection('weeklyTasks');
+    //   dailyTickets.add(newTicket).then((doc) => {
+    //     console.log(doc)
+    //   });
+    // }
+    // else if (selectedPeriod === 'monthly') {
+    //   const dailyTickets = firebase.firestore().collection('monthlyTasks');
+    //   dailyTickets.add(newTicket).then((doc) => {
+    //     console.log(doc)
+    //   });
+    // }
+
+    const newTicket = { title: f.title, type: selectedPeriod, status: 'Assigned', name: category || categoryList[0].name, description, review: '', userID: 1, createdDate: new Date(), modifiedDate: new Date(), apartmentID: model.getApartmentID() }
+    const ticket = firebase.firestore().collection('tickets');
+    ticket.add(newTicket).then((doc) => {
+      console.log(doc)
+    });
+
+    ToastAndroid.show('Ticket created successfully', ToastAndroid.SHORT);
   };
 
   return (
@@ -208,11 +214,11 @@ const CreateTask = () => {
           </View>
         </View>
         <View style={styles.rowStyle3}>
-          <Button title="Create" color="#DCA50F" onPress={onCreateTask} />
+          <Button title="Create" color="#DCA50F" onPress={onCreateTicket} />
         </View>
       </View>
     </View>
   );
 };
 
-export default CreateTask;
+export default CreateTicket;

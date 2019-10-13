@@ -172,6 +172,9 @@ export const model = m => {
     logout: () => {
       _model = null;
     },
+    getApartmentID: () => {
+      return _model.apartmentID;
+    }
   };
   return session;
 };

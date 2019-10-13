@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import {
   View,
   TextInput,
@@ -9,11 +9,16 @@ import {
 } from 'react-native';
 import styles from './styles';
 import firebase from 'react-native-firebase';
-import {DailyItems, WeeklyItems, MonthlyItems} from '../../model/model';
+import { DailyItems, WeeklyItems, MonthlyItems } from '../../model/model';
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   const appModel = navigation.getScreenProps();
-  // const dailyTickets = firebase.firestore().collection('dailyTickets');
+  const usersRef = firebase.firestore().collection('users');
+  const apartmentRef = firebase.firestore().collection('apartments');
+
+
+
+
   // const weeklyTickets = firebase.firestore().collection('weeklyTickets');
   // const monthlyTickets = firebase.firestore().collection('monthlyTickets');
 
@@ -42,11 +47,11 @@ const Login = ({navigation}) => {
   //   .catch(e => console.log(e));
 
   // monthlyTickets
-    // .get()
-    // .then(doc => {
-    //   console.log(doc, doc._docs[0].data());
-    // })
-    // .catch(e => console.log(e));
+  // .get()
+  // .then(doc => {
+  //   console.log(doc, doc._docs[0].data());
+  // })
+  // .catch(e => console.log(e));
 
   const refFirstDigit = React.useRef(),
     refSecondDigit = React.useRef(),
@@ -54,7 +59,7 @@ const Login = ({navigation}) => {
     refFourthDigit = React.useRef();
   let pwd = ['', '', '', ''];
   const onPasswordChange = (me, val) => {
-    pwd[me] = +val;
+    pwd[me] = val;
     if (me === '0' && val) {
       refSecondDigit.current.focus();
     } else if (me === '1' && val) {
@@ -64,30 +69,45 @@ const Login = ({navigation}) => {
     } else if (me === '3' && val) {
       refFourthDigit.current.focus();
     }
-    if (pwd[0] === 1 && pwd[1] === 2 && pwd[2] === 3 && pwd[3] === 4) {
-      appModel.login({roles: ['secretary']});
-      if (appModel.isSecretary()) {
-        firebase
-          .auth()
-          .signInAnonymously()
-          .then(() => {
-            console.log('login');
-          })
-          .catch(error => console.log(error));
-        navigation.navigate('secretary_dashboard');
-      } else {
-        ToastAndroid.show('Invalid authentication', ToastAndroid.SHORT);
-      }
-    } else if (pwd[0] === 1 && pwd[1] === 2 && pwd[2] === 3 && pwd[3] === 5) {
-      appModel.login({roles: ['manager']});
-      if (appModel.isManager()) {
-        navigation.navigate('manager_dashboard');
-      } else {
-        ToastAndroid.show('Invalid authentication', ToastAndroid.SHORT);
-      }
-    } else if (pwd[0] && pwd[1] && pwd[2] && pwd[3]) {
-      ToastAndroid.show('Invalid password', ToastAndroid.SHORT);
+
+    if (pwd.indexOf('') >= 0) {
+      return;
     }
+
+    let v = pwd.reduce(((a, c) => a + c), '');
+
+    let query = usersRef.where('password', '==', v).get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          ToastAndroid.show('Invalid authentication', ToastAndroid.SHORT);
+          return;
+        }
+
+        snapshot.forEach(doc => {
+          // console.log(doc.id, '=>', doc.data());
+          appModel.login(doc.data());
+
+          apartmentRef.doc(appModel.getApartmentID()).get().then(doc => console.log(doc, doc.data())).catch(e => console.log(e))
+
+
+          if (appModel.isSecretary()) {
+            // firebase
+            //   .auth()
+            //   .signInAnonymously()
+            //   .then(() => {
+            //     console.log('login');
+            //   })
+            //   .catch(error => console.log(error));
+            navigation.navigate('secretary_dashboard');
+          } else if (appModel.isManager()) {
+            navigation.navigate('manager_dashboard');
+          }
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+
   };
 
   return (

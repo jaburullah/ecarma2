@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import styles from './styles';
 import firebase from 'react-native-firebase';
 
@@ -10,7 +10,8 @@ function numLengthCheck(num) {
 }
 
 function calculatePercentage(ticketCount, totalTicketCount) {
-  return Math.floor(ticketCount / totalTicketCount * 100);
+  let s = Math.floor(ticketCount / totalTicketCount * 100)
+  return isNaN(s) ? 0 : s;
 }
 
 function separateTickets(data, type) {
@@ -69,52 +70,30 @@ const ManagerDashboard = ({ navigation }) => {
   const onTouchTask = () => {
     navigation.navigate('manager_task_view');
   };
-  const [tickets, setTickets] = React.useState([{}, {}, {}]);
 
-  const [isDailyLoading, setDailyLoading] = React.useState(true);
-  const [isWeeklyLoading, setWeeklyLoading] = React.useState(true);
-  const [isMonthlyLoading, setMonthlyLoading] = React.useState(true);
+  const [state, setState] = React.useState({
+    tickets: [],
+    isLoading: true
+  });
 
-  const dailyTickets = firebase.firestore().collection('dailyTickets');
-  const weeklyTickets = firebase.firestore().collection('weeklyTickets');
-  const monthlyTickets = firebase.firestore().collection('monthlyTickets');
+  const db = firebase.firestore();
+  const ticketsRef = db.collection('tickets');
+  const dailyTasksRef = db.collection('dailyTasks');
+  const weeklyTasksRef = db.collection('weeklyTasks');
+  const monthlyTasksRef = db.collection('monthlyTasks');
 
-  dailyTickets
-    .get()
-    .then(data => {
-      if (isDailyLoading) {
-        tickets[0] = separateTickets(data.docs, 'daily');
-        setTickets([...tickets]);
-        setDailyLoading(false);
-      }
+  Promise.all([ticketsRef.get(), dailyTasksRef.get(), weeklyTasksRef.get(), monthlyTasksRef.get()])
+    .then((data) => {
+      let tickets = separateTickets(data[0]._docs, 'tickets'),
+        dailyTasks = separateTickets(data[0]._docs, 'daily'),
+        weeklyTasks = separateTickets(data[1]._docs, 'weekly'),
+        monthlyTasks = separateTickets(data[2]._docs, 'monthly');
+      setState(c => ({ tickets: [tickets, dailyTasks, weeklyTasks, monthlyTasks], isLoading: false }));
     })
     .catch(e => console.log(e));
 
-  weeklyTickets
-    .get()
-    .then(data => {
-      if (isWeeklyLoading) {
-        console.log('weeklyTickets', tickets);
-        tickets[1] = separateTickets(data.docs, 'weekly');
-        setTickets([...tickets]);
-        setWeeklyLoading(false);
-      }
-    })
-    .catch(e => console.log(e));
-
-  monthlyTickets
-    .get()
-    .then(data => {
-      if (isMonthlyLoading) {
-        tickets[2] = separateTickets(data.docs, 'monthly');
-        setTickets([...tickets]);
-        setMonthlyLoading(false);
-      }
-    })
-    .catch(e => console.log(e));
 
   const showSmiley = (o) => {
-    console.log('showSmiley', o)
     if (o.max === 'happy' || true) {
       return (<View style={[styles.taskSmileyContainer]}>
         <Image
@@ -124,37 +103,19 @@ const ManagerDashboard = ({ navigation }) => {
         <Text style={styles.taskSmileyText}>{o.happyPercent}%</Text>
       </View>)
     }
-    // else if (o.max === 'normal') {
-    //   return (<View style={[styles.taskSmileyContainer]}>
-    //     <Image
-    //       style={styles.taskSmiley}
-    //       source={require('../../../assets/normal_smiley.png')}
-    //     />
-    //     <Text style={styles.taskSmileyText}>{o.normalPercent}%</Text>
-    //   </View>)
-    // }
-    // else if (o.max === 'sad') {
-    //   return (<View style={[styles.taskSmileyContainer]}>
-    //     <Image
-    //       style={styles.taskSmiley}
-    //       source={require('../../../assets/sad_smiley.png')}
-    //     />
-    //     <Text style={styles.taskSmileyText}>{o.sadPercent}%</Text>
-    //   </View>)
-    // }
   }
 
   const getView = () => {
-    if (isDailyLoading || isWeeklyLoading || isMonthlyLoading) {
+    if (state.isLoading) {
       return (
-        <View style={styles.taskLodingContainer}>
+        <View style={styles.taskLoadingContainer}>
           <Text>Loading...</Text>
         </View>
       );
     } else {
-      return tickets.map((o, i) => {
+      return state.tickets.map((o, i) => {
         return (
-          <View key={o.name} style={styles.taskContainer}>
+          <View key={`${o.name}_${i}`} style={styles.taskContainer}>
             <View style={styles.taskCountContainer}>
               <TouchableOpacity onPress={onTouchTask}>
                 <View style={styles.taskCount}>
@@ -173,7 +134,7 @@ const ManagerDashboard = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.parent}>
+    <ScrollView style={styles.parent}>
       <View style={styles.headerTitleRow}>
         <Text style={styles.headerTitle}>DASHBOARD</Text>
       </View>
@@ -181,7 +142,7 @@ const ManagerDashboard = ({ navigation }) => {
         <Text style={styles.headerSubTitle}>Task View</Text>
       </View>
       {getView()}
-    </View>
+    </ScrollView>
   );
 };
 

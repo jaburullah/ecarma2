@@ -2,30 +2,10 @@ import React from 'react';
 import { View, Text, Button, FlatList } from 'react-native';
 
 import styles from './styles';
-import ListItem from '../common/ListItem';
-import firebase from 'react-native-firebase';
-const Weekly = ({ navigation }) => {
+import ListItem from '../../../common/ListItem';
+import InfiniteScroll from '../../../common/InfiniteScroll';
+const Weekly = ({ navigation, data, isLoading, isRefreshing, retrieveMore }) => {
   const appModel = navigation.getScreenProps();
-  const weeklyTickets = firebase.firestore().collection('weeklyTickets');
-
-  const [dataItem, setDataItem] = React.useState(null);
-  const [isLoading, setLoading] = React.useState(true);
-  weeklyTickets
-    .get()
-    .then(data => {
-      if (isLoading) {
-        let listData = [];
-        data.docs.forEach(o => {
-          let d = o.data();
-          d.id = o.id;
-          listData.push(d);
-        });
-        setDataItem(listData);
-        setLoading(false);
-      }
-      console.log('Weekly getting');
-    })
-    .catch(e => console.log(e));
 
   const updateReview = doc => {
     weeklyTickets.doc(doc.id).update({
@@ -44,7 +24,7 @@ const Weekly = ({ navigation }) => {
     } else {
       return (
         <FlatList
-          data={dataItem}
+          data={data}
           renderItem={({ item, index }) => (
             <ListItem
               index={index}
@@ -54,6 +34,12 @@ const Weekly = ({ navigation }) => {
             />
           )}
           keyExtractor={(item, index) => index.toString()}
+          // On End Reached (Takes a function)
+          onEndReached={retrieveMore}
+          // How Close To The End Of List Until Next Data Request Is Made
+          onEndReachedThreshold={2}
+          // Refreshing (Set To True When End Reached)
+          refreshing={isRefreshing}
         />
       );
     }
@@ -65,10 +51,10 @@ const Weekly = ({ navigation }) => {
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         {appModel.isSecretary() && (
           <Button
-            title="Create New Task"
+            title="Create New Ticket"
             color="#DCA50F"
             onPress={() => {
-              navigation.navigate('task');
+              navigation.navigate('ticket');
             }}
           />
         )}
@@ -77,4 +63,5 @@ const Weekly = ({ navigation }) => {
   );
 };
 
-export default Weekly;
+
+export default InfiniteScroll(Weekly, { limit: 10, collection: 'weeklyTasks' });

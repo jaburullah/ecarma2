@@ -57,8 +57,9 @@ const ListItem = ({ appModel, data, updateCallBack, index }) => {
                 selectedValue={status}
                 onValueChange={updateStatus}
                 underlineColorAndroid="black">
-                <Picker.Item key={'Assigned'} label={'Assigned'} value={'Assigned'} />
-                <Picker.Item key={'Closed'} label={'Closed'} value={'Closed'} />
+                <Picker.Item key={'open'} label={'Open'} value={'Open'} />
+                <Picker.Item key={'in_progress'} label={'In progress'} value={'in_progress'} />
+                <Picker.Item key={'completed'} label={'Completed'} value={'in_progress'} />
               </Picker>
             )}
           </View>

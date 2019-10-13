@@ -1,13 +1,13 @@
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
-import Daily from '../../../Daily/Daily';
-import Weekly from '../../../Weekly/Weekly';
-import Monthly from '../../../Monthly/Monthly';
+import DailyTask from '../DailyTask/DailyTask';
+import WeeklyTask from '../WeeklyTask/WeeklyTask';
+import MonthlyTask from '../MonthlyTask/MonthlyTask';
 
 const ApartmentTab = createMaterialTopTabNavigator(
   {
-    daily: Daily,
-    weekly: Weekly,
-    monthly: Monthly,
+    daily: DailyTask,
+    weekly: WeeklyTask,
+    monthly: MonthlyTask,
   },
   {
     lazy: true,
