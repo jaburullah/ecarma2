@@ -1,20 +1,23 @@
 import React, { Fragment } from 'react';
-import { View, Text, StatusBar } from 'react-native';
-
+import { createAppContainer } from 'react-navigation';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 
+import { createStackNavigator } from 'react-navigation-stack';
+import CreateTicket from '../../../Ticket/Create/CreateTicket';
 
 import styles from './styles';
 
+import DailyTask from '../DailyTask/DailyTask';
 import WeeklyTask from '../WeeklyTask/WeeklyTask';
 import MonthlyTask from '../MonthlyTask/MonthlyTask';
-import DailyTask from '../DailyTask/DailyTask';
+import ManagerApartmentInfo from '../ManagerApartmentInfo';
 
-const SecretaryTaskView = createMaterialTopTabNavigator(
+
+const ApartmentTab = createMaterialTopTabNavigator(
   {
-    daily: DailyTask,
-    weekly: WeeklyTask,
-    monthly: MonthlyTask,
+    daily: (props) => (<DailyTask {...props} />),
+    weekly: (props) => (<WeeklyTask {...props} />),
+    monthly: (props) => (<MonthlyTask {...props} />),
   },
   {
     lazy: true,
@@ -22,7 +25,6 @@ const SecretaryTaskView = createMaterialTopTabNavigator(
     swipe: true,
     animationEnabled: true,
     tabBarOptions: {
-      scrollEnabled: false,
       activeTintColor: 'white',
       inactiveTintColor: 'white',
 
@@ -32,10 +34,37 @@ const SecretaryTaskView = createMaterialTopTabNavigator(
       style: {
         backgroundColor: '#482114',
         elevation: 0,
-        // backgroundColor: 'transparent'
       },
     },
   },
 );
 
-export default SecretaryTaskView;
+
+const AppNavigator = createStackNavigator({
+  home: {
+    screen: ApartmentTab
+  },
+  ticket: {
+    screen: CreateTicket
+  },
+},
+  {
+    headerMode: 'none',
+    navigationOptions: {
+      headerVisible: false,
+    }
+  });
+
+const SubNavigator = createAppContainer(AppNavigator);
+
+
+
+const Nav = ({ navigation }) => {
+  const appModel = navigation.getScreenProps();
+  const apartments = appModel.getApartments();
+
+  return <SubNavigator screenProps={{ ...appModel, apartmentID: apartments[0].id }} />
+}
+
+
+export default ManagerApartmentInfo(Nav);

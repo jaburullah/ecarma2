@@ -18,13 +18,16 @@ import SecretaryDashboard from './common/components/Dashboard/Secretary/Secretar
 import ManagerDashboard from './common/components/Dashboard/Manager/ManagerDashboard';
 
 import CreateTicket from './common/components/Ticket/Create/CreateTicket';
-import ViewTicket from './common/components/Ticket/View/ViewTicket';
+import SecretaryTicketView from './common/components/Ticket/View/SecretaryTicketView';
 
 import SecretaryTaskView from './common/components/Task/View/Secretary/SecretaryTaskView';
-import ManagerTaskView from './common/components/Task/View/Manager/ManagerTaskView';
+// import ManagerTaskView from './common/components/Task/View/Manager/ManagerTaskView';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { model } from './common/model/model'
+import ManagerTaskView from './common/components/Task/View/Manager/ManagerTaskView';
+import ManagerTicketView from './common/components/Ticket/View/ManagerTicketView';
+
 
 const navigationOptions = {
   title: '',
@@ -103,30 +106,39 @@ const AppNavigator = createStackNavigator({
     screen: Login,
     navigationOptions: navigationOptions
   },
-  secretary_dashboard: {
-    screen: SecretaryDashboard,
-    navigationOptions: navigationOptions,
-  },
+
   manager_dashboard: {
     screen: ManagerDashboard,
     navigationOptions: navigationOptions,
   },
-  ticket: {
-    screen: CreateTicket,
+  manager_task_view: {
+    screen: ManagerTaskView,
     navigationOptions: navigationOptions,
   },
-  ticket_view: {
-    screen: ViewTicket,
+  manager_ticket_view: {
+    screen: ManagerTicketView,
+    navigationOptions: navigationOptions,
+  },
+
+
+  secretary_dashboard: {
+    screen: SecretaryDashboard,
     navigationOptions: navigationOptions,
   },
   secretary_task_view: {
     screen: SecretaryTaskView,
     navigationOptions: navigationOptions,
   },
-  manager_task_view: {
-    screen: ManagerTaskView,
+  secretary_ticket_view: {
+    screen: SecretaryTicketView,
     navigationOptions: navigationOptions,
-  }
+  },
+  // ticket: {
+  //   screen: CreateTicket,
+  //   navigationOptions: navigationOptions,
+  // },
+
+
 }, {
   transitionConfig
 });
@@ -135,9 +147,10 @@ const AppNavigator = createStackNavigator({
 
 
 const Navigator = createAppContainer(AppNavigator);
-// const AppModel = model({ roles: [] });
-const AppModel = model({ roles: ['manager'] });
-// const AppModel = model({ roles: ['secretary'] });
+const AppModel = model({ roles: [] });
+AppModel.refresh = true;
+// const AppModel = model({ roles: ['manager'], apartments: [{ name: "apartment 1", id: 1 }, { name: "apartment 2", id: 2 }] });
+// const AppModel = model({ roles: ['secretary'], apartments: [{ name: "apartment 1", id: 'ANorAj4YrpleFZECjC6g' }] });
 
 const App = () => {
   return <Navigator screenProps={AppModel} />

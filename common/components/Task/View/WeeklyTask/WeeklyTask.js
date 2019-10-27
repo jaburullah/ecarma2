@@ -4,13 +4,17 @@ import { View, Text, Button, FlatList } from 'react-native';
 import styles from './styles';
 import ListItem from '../../../common/ListItem';
 import InfiniteScroll from '../../../common/InfiniteScroll';
+import firebase from 'react-native-firebase';
+
 const Weekly = ({ navigation, data, isLoading, isRefreshing, retrieveMore }) => {
   const appModel = navigation.getScreenProps();
+  const weeklyTasksRef = firebase.firestore().collection('weeklyTasks');
 
   const updateReview = doc => {
-    weeklyTickets.doc(doc.id).update({
+    weeklyTasksRef.doc(doc.id).update({
       review: doc.review,
       status: doc.status,
+      modifiedDate: new Date()
     });
   };
 
@@ -22,6 +26,15 @@ const Weekly = ({ navigation, data, isLoading, isRefreshing, retrieveMore }) => 
         </View>
       );
     } else {
+
+      if (!data.length) {
+        return (
+          <View style={styles.noTaskFound}>
+            <Text>No Tasks found</Text>
+          </View>
+        );
+      }
+
       return (
         <FlatList
           data={data}
@@ -34,12 +47,12 @@ const Weekly = ({ navigation, data, isLoading, isRefreshing, retrieveMore }) => 
             />
           )}
           keyExtractor={(item, index) => index.toString()}
-          // On End Reached (Takes a function)
-          onEndReached={retrieveMore}
-          // How Close To The End Of List Until Next Data Request Is Made
-          onEndReachedThreshold={2}
-          // Refreshing (Set To True When End Reached)
-          refreshing={isRefreshing}
+        // On End Reached (Takes a function)
+        // onEndReached={retrieveMore}
+        // How Close To The End Of List Until Next Data Request Is Made
+        // onEndReachedThreshold={2}
+        // Refreshing (Set To True When End Reached)
+        // refreshing={isRefreshing}
         />
       );
     }

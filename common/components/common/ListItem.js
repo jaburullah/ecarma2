@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Picker, TouchableOpacity, Modal, TouchableHighlight, Alert } from 'react-native';
+import { View, Text, Image, Picker, TouchableOpacity, Modal, TouchableHighlight, Alert, ToastAndroid } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -9,10 +9,12 @@ import { TransitionView } from "../TransitionView";
 
 import styles from './styles';
 const ListItem = ({ appModel, data, updateCallBack, index }) => {
+
   const [status, changeStatus] = React.useState(data.status);
   const [review, changeReview] = React.useState(data.review);
   const [modalVisible, changeModalVisible] = React.useState(false);
   const updateStatus = v => {
+
     changeStatus(v);
     let d = { ...data };
     d.status = v;
@@ -44,6 +46,24 @@ const ListItem = ({ appModel, data, updateCallBack, index }) => {
     }
   };
 
+
+  const getIcon = () => {
+    if (review) {
+      return (<Icon
+        key={'search'}
+        style={{ paddingRight: 10 }}
+        name="md-star"
+        color={"#bdbdbd"}
+        size={30} />);
+    }
+    return (<Icon
+      key={'search'}
+      style={{ paddingRight: 10 }}
+      name="md-star-half"
+      color={"#000"}
+      size={30} />);
+  }
+
   return (
     <TransitionView index={index} style={styles.listParentContainer} animation="fadeInRight">
       <View style={styles.listContainer}>
@@ -58,8 +78,8 @@ const ListItem = ({ appModel, data, updateCallBack, index }) => {
                 onValueChange={updateStatus}
                 underlineColorAndroid="black">
                 <Picker.Item key={'open'} label={'Open'} value={'Open'} />
-                <Picker.Item key={'in_progress'} label={'In progress'} value={'in_progress'} />
-                <Picker.Item key={'completed'} label={'Completed'} value={'in_progress'} />
+                <Picker.Item key={'in_progress'} label={'In progress'} value={'In progress'} />
+                <Picker.Item key={'completed'} label={'Completed'} value={'Completed'} />
               </Picker>
             )}
           </View>
@@ -148,18 +168,16 @@ const ListItem = ({ appModel, data, updateCallBack, index }) => {
 
                     }>
                     {
-                      (status === 'Closed') &&
+                      (status === 'Completed') &&
                       (<TouchableOpacity
                         onPress={() => {
+                          if (review) {
+                            ToastAndroid.show('Feedback has given', ToastAndroid.SHORT);
+                            return;
+                          }
                           changeModalVisible(true)
                         }}>
-                        <Icon
-                          key={'search'}
-                          style={{ paddingRight: 10 }}
-                          name="md-star-half"
-                          color="#000"
-                          size={30}
-                        />
+                        {getIcon()}
                       </TouchableOpacity>)
                     }
                   </View>

@@ -4,9 +4,10 @@ import styles from './styles';
 import Dashboard from '../DashBoard';
 
 const SecretaryDashboard = ({ navigation, state }) => {
+
   const onTouchTask = (type) => {
     if (type === 'ticket') {
-      navigation.navigate(`ticket_view`);
+      navigation.navigate(`secretary_ticket_view`);
       return;
     }
     navigation.navigate(`secretary_task_view`);
@@ -38,7 +39,7 @@ const SecretaryDashboard = ({ navigation, state }) => {
             <View style={styles.taskCountContainer}>
               <TouchableOpacity onPress={() => { onTouchTask(i === 0 ? 'ticket' : 'task') }}>
                 <View style={styles.taskCount}>
-                  <Text style={styles.taskTextTitle}>OPEN TICKET</Text>
+                  <Text style={styles.taskTextTitle}>OPEN {i === 0 ? 'TICKET' : 'TASK'}</Text>
                   <Text style={styles.taskTextCount}>{o.openTicketCount}</Text>
                   <Text style={styles.taskTextTitle}>{o.title}</Text>
                 </View>
@@ -56,6 +57,9 @@ const SecretaryDashboard = ({ navigation, state }) => {
     <ScrollView style={styles.parent}>
       <View style={styles.headerTitleRow}>
         <Text style={styles.headerTitle}>DASHBOARD - SECRETARY</Text>
+      </View>
+      <View style={styles.headerTitleRow}>
+        <Text style={styles.headerTitle}>{!state.apartmentInfo[0] ? '' : state.apartmentInfo[0]}</Text>
       </View>
       <View style={styles.headerSubTitleRow}>
         <Text style={styles.headerSubTitle}>Task View</Text>

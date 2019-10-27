@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, Animated, Easing } from 'react-native';
 import styles from './styles';
 import Dashboard from '../DashBoard';
 
 const ManagerDashboard = ({ navigation, state }) => {
+
   const onTouchTask = (type) => {
     if (type === 'ticket') {
-      navigation.navigate(`ticket_view`);
+      navigation.navigate(`manager_ticket_view`);
       return;
     }
     navigation.navigate(`manager_task_view`);

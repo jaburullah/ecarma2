@@ -14,7 +14,34 @@ import { DailyItems, WeeklyItems, MonthlyItems } from '../../model/model';
 const Login = ({ navigation }) => {
   const appModel = navigation.getScreenProps();
   const usersRef = firebase.firestore().collection('users');
-  const apartmentRef = firebase.firestore().collection('apartments');
+  // const apartmentRef = firebase.firestore().collection('apartments');
+  // const dailyTasksRef = firebase.firestore().collection('dailyTasks');
+  // const weeklyTasksRef = firebase.firestore().collection('weeklyTasks');
+  // const monthlyTasksRef = firebase.firestore().collection('monthlyTasks');
+
+  // apartmentRef.get().then(docs => {
+  //   docs.forEach(doc => {
+  //     DailyItems.forEach((v) => {
+  //       v.apartmentID = doc.id;
+
+  //       dailyTasksRef.add(v);
+  //     });
+
+  //     WeeklyItems.forEach((v) => {
+  //       v.apartmentID = doc.id;
+  //       weeklyTasksRef.add(v);
+  //     });
+
+  //     MonthlyItems.forEach((v) => {
+  //       v.apartmentID = doc.id;
+  //       monthlyTasksRef.add(v);
+  //     });
+  //     console.log(DailyItems, WeeklyItems, MonthlyItems);
+  //   });
+
+
+  // }).catch(e => console.log(e));
+
 
 
 
@@ -85,10 +112,9 @@ const Login = ({ navigation }) => {
 
         snapshot.forEach(doc => {
           // console.log(doc.id, '=>', doc.data());
-          appModel.login(doc.data());
-
-          apartmentRef.doc(appModel.getApartmentID()).get().then(doc => console.log(doc, doc.data())).catch(e => console.log(e))
-
+          let d = doc.data();
+          d.id = doc.id;
+          appModel.login(d);
 
           if (appModel.isSecretary()) {
             // firebase
@@ -163,7 +189,10 @@ const Login = ({ navigation }) => {
           />
         </View>
         <View style={styles.forgotPasswordContainer}>
-          <Text style={styles.forgotPasswordText}>Forgor Password ?</Text>
+          <Text style={styles.forgotPasswordText}>Forgot Password ?</Text>
+        </View>
+        <View style={styles.versionDetailContainer}>
+          <Text style={styles.versionDetail}>version 0.1.5</Text>
         </View>
       </View>
     </View>

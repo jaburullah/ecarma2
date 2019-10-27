@@ -20,6 +20,9 @@ import firebase from 'react-native-firebase';
 
 const CreateTicket = ({ navigation }) => {
   model = navigation.getScreenProps();
+
+  const { goBack } = navigation;
+
   const options = {
     title: 'Select Avatar',
     takePhotoButtonTitle: 'Take a photo',
@@ -50,6 +53,12 @@ const CreateTicket = ({ navigation }) => {
     {
       name: 'monthly',
       label: 'Monthly',
+      isChecked: false,
+    },
+
+    {
+      name: 'others',
+      label: 'Others',
       isChecked: false,
     },
   ]);
@@ -155,13 +164,18 @@ const CreateTicket = ({ navigation }) => {
     //   });
     // }
 
-    const newTicket = { title: f.title, type: selectedPeriod, status: 'Assigned', name: category || categoryList[0].name, description, review: '', userID: 1, createdDate: new Date(), modifiedDate: new Date(), apartmentID: model.getApartmentID() }
+    const newTicket = { title: f.title, type: selectedPeriod, status: 'Open', name: category || categoryList[0].name, description, review: '', userID: model.getUserID(), createdDate: new Date(), modifiedDate: new Date(), apartmentID: model.getApartmentsID()[0] }
     const ticket = firebase.firestore().collection('tickets');
     ticket.add(newTicket).then((doc) => {
-      console.log(doc)
+      console.log(doc);
+
     });
 
-    ToastAndroid.show('Ticket created successfully', ToastAndroid.SHORT);
+    model.addTicket(newTicket);
+
+    ToastAndroid.show('Ticket created successfully', ToastAndroid.LONG);
+    //navigation.navigate('home');
+    goBack();
   };
 
   return (
@@ -170,6 +184,9 @@ const CreateTicket = ({ navigation }) => {
       <View style={styles.container}>
         <View style={styles.rowStyle1}>
           <Text style={styles.headerTitle}>Create New Ticket</Text>
+        </View>
+        <View style={[styles.rowStyle1, styles.radioButtonsContainer]}>
+          {getRadioButton()}
         </View>
         <View style={styles.rowStyle1}>
           <Text style={styles.title}>Select Category</Text>
@@ -183,9 +200,6 @@ const CreateTicket = ({ navigation }) => {
               );
             })}
           </Picker>
-        </View>
-        <View style={[styles.rowStyle1, styles.radioButtonsContainer]}>
-          {getRadioButton()}
         </View>
         <View style={styles.rowStyle4}>
           <Text style={[styles.title, styles.magrinBottom10]}>Description</Text>
