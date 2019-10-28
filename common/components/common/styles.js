@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   listParentContainer: { margin: 10, height: 100 },
+  listTouchContainer: {
+    flex: 1,
+  },
+  description: { padding: 2 },
   listContainer: {
     paddingLeft: 10,
     paddingRight: 10,

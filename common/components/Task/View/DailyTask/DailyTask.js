@@ -7,7 +7,7 @@ import ListItem from '../../../common/ListItem';
 import InfiniteScroll from '../../../common/InfiniteScroll';
 import firebase from 'react-native-firebase';
 
-const DailyTask = ({ navigation, data, isLoading, isRefreshing, retrieveMore }) => {
+const DailyTask = ({ navigation, data, isLoading, isRefreshing, retrieveMore, CB }) => {
   const appModel = navigation.getScreenProps();
 
   const dailyTasksRef = firebase.firestore().collection('dailyTasks');
@@ -69,7 +69,7 @@ const DailyTask = ({ navigation, data, isLoading, isRefreshing, retrieveMore }) 
           title="Create New Ticket"
           color="#DCA50F"
           onPress={() => {
-            navigation.navigate('ticket', { apartmentID: navigation.getScreenProps().apartmentID });
+            navigation.navigate('ticket', { apartmentID: navigation.getScreenProps().apartmentID, CB });
           }}
         />
       </View>

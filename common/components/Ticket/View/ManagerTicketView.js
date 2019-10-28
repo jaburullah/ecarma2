@@ -12,7 +12,7 @@ import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
 import CreateTicket from '../Create/CreateTicket';
 
-const ManagerTicketView = ({ navigation, data, isLoading, isRefreshing, retrieveMore }) => {
+const ManagerTicketView = ({ navigation, data, isLoading, isRefreshing, retrieveMore, CB }) => {
 
   const appModel = navigation.getScreenProps();
   const ticketsRef = firebase.firestore().collection('tickets');
@@ -52,6 +52,7 @@ const ManagerTicketView = ({ navigation, data, isLoading, isRefreshing, retrieve
               appModel={appModel}
               data={item}
               updateCallBack={updateCallBack}
+              showDescriptionDialog={true}
             />
           )}
           keyExtractor={(item, index) => index.toString()}
@@ -76,7 +77,7 @@ const ManagerTicketView = ({ navigation, data, isLoading, isRefreshing, retrieve
           title="Create New Ticket"
           color="#DCA50F"
           onPress={() => {
-            navigation.navigate('ticket', { apartmentID: navigation.getScreenProps().apartmentID });
+            navigation.navigate('ticket', { apartmentID: navigation.getScreenProps().apartmentID, CB });
           }}
         />
       </View>

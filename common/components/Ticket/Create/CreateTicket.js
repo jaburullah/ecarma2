@@ -164,7 +164,7 @@ const CreateTicket = ({ navigation }) => {
     //   });
     // }
 
-    const newTicket = { title: f.title, type: selectedPeriod, status: 'Open', name: category || categoryList[0].name, description, review: '', userID: model.getUserID(), createdDate: new Date(), modifiedDate: new Date(), apartmentID: model.getApartmentsID()[0] }
+    const newTicket = { title: f.title, type: selectedPeriod, status: 'Open', name: category || categoryList[0].name, description, review: '', userID: model.getUserID(), createdDate: new Date(), modifiedDate: new Date(), apartmentID: model.apartmentID }
     const ticket = firebase.firestore().collection('tickets');
     ticket.add(newTicket).then((doc) => {
       console.log(doc);
@@ -175,6 +175,7 @@ const CreateTicket = ({ navigation }) => {
 
     ToastAndroid.show('Ticket created successfully', ToastAndroid.LONG);
     //navigation.navigate('home');
+    navigation.getParam('CB')();
     goBack();
   };
 

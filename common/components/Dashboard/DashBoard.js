@@ -17,6 +17,7 @@ function separateTickets(data, type, appModel) {
     let normalTickets = [];
     let happyTickets = [];
     let noReview = [];
+    let openTickets = [];
     data.forEach(o => {
         let d = o.data();
         d.id = o.id
@@ -31,6 +32,11 @@ function separateTickets(data, type, appModel) {
         }
         else {
             noReview.push(d);
+        }
+
+
+        if (d.status === 'Open') {
+            openTickets.push(d);
         }
     });
 
@@ -55,7 +61,7 @@ function separateTickets(data, type, appModel) {
     let m = {
         name: type,
         title: type.toUpperCase(),
-        openTicketCount: numLengthCheck(noReview.length),
+        openTicketCount: numLengthCheck(openTickets.length),
         happyPercent: numLengthCheck(
             calculatePercentage(happyTickets.length, totalCount),
         ),
@@ -147,7 +153,6 @@ const Dashboard = (C) => {
             }).catch(e => console.log(e));
 
         }
-
 
 
 

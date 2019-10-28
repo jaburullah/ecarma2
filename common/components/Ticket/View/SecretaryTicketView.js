@@ -8,9 +8,10 @@ import InfiniteScroll from '../../common/InfiniteScroll';
 import ManagerApartmentInfo from '../../Task/View/ManagerApartmentInfo';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import CreateTicket from '../Create/CreateTicket';
 
-const SecretaryTicketView = ({ navigation, data, isLoading, isRefreshing, retrieveMore }) => {
+const SecretaryTicketView = ({ navigation, data, isLoading, isRefreshing, retrieveMore, CB }) => {
 
   const appModel = navigation.getScreenProps();
   const ticketsRef = firebase.firestore().collection('tickets');
@@ -50,6 +51,7 @@ const SecretaryTicketView = ({ navigation, data, isLoading, isRefreshing, retrie
               appModel={appModel}
               data={item}
               updateCallBack={updateCallBack}
+              showDescriptionDialog={true}
             />
           )}
           keyExtractor={(item, index) => index.toString()}
@@ -74,7 +76,7 @@ const SecretaryTicketView = ({ navigation, data, isLoading, isRefreshing, retrie
           title="Create New Ticket"
           color="#DCA50F"
           onPress={() => {
-            navigation.navigate('ticket');
+            navigation.navigate('ticket', { apartmentID: navigation.getScreenProps().apartmentID, CB });
           }}
         />
       </View>
@@ -100,6 +102,7 @@ const SecretaryApartmentTicketView = ({ navigation }) => {
     },
   },
     {
+      initialRouteName: 'home',
       headerMode: 'none',
       navigationOptions: {
         headerVisible: false,
@@ -109,7 +112,43 @@ const SecretaryApartmentTicketView = ({ navigation }) => {
 
   const TicketStackAppContainer = createAppContainer(TicketStackNavigator);
 
-  return <TicketStackAppContainer screenProps={{ ...appModel, apartmentID: apartments[0].id }} />
+
+  const tabs = apartments.reduce(((a, v) => {
+    a[v.name.replace(/\s+/g, '_')] = {
+      // screen: SSTab,
+      screen: () => (<TicketStackAppContainer screenProps={{ ...appModel, apartmentID: v.id }} />),
+      navigationOptions: {
+        title: v.name,
+      },
+    }
+    return a;
+  }), {});
+
+  const ApartmentTab = createMaterialTopTabNavigator(
+    tabs,
+    {
+      lazy: true,
+      swipeEnabled: true,
+      swipe: true,
+      animationEnabled: true,
+      tabBarOptions: {
+        activeTintColor: 'white',
+        scrollEnabled: true,
+        inactiveTintColor: 'white',
+
+        indicatorStyle: {
+          backgroundColor: 'yellow',
+        },
+        style: {
+          backgroundColor: '#482114',
+          elevation: 0,
+        },
+      },
+    },
+  );
+  const ApartmentTabNavigator = createAppContainer(ApartmentTab);
+
+  return <ApartmentTabNavigator screenProps={appModel} />
 
 }
 

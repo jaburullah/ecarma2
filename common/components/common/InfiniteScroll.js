@@ -4,6 +4,7 @@ const InfiniteScroll = (C, options = { limit: 10, collection: null }) => {
     return (props) => {
         const appModel = props.navigation.getScreenProps();
         const database = firebase.firestore();
+
         const [state, setState] = React.useState({
             data: [],
             limit: options.limit,
@@ -113,19 +114,19 @@ const InfiniteScroll = (C, options = { limit: 10, collection: null }) => {
             }
         }
 
-
+        const CB = () => {
+            setState(c => ({ ...c, count: c.count + 1 }));
+        }
 
         React.useEffect(() => {
-            props.navigation.addListener('didFocus', () => {
-                setUp()
-            });
-        }, [])
+            setUp();
+        }, [state.count])
 
         return (< C {...props}
             data={state.data}
             isLoading={state.isLoading}
             isRefreshing={state.isRefreshing}
-            retrieveMore={retrieveMore} />)
+            retrieveMore={retrieveMore} CB={CB} />)
     };
 }
 
