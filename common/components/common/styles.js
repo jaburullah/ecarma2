@@ -27,7 +27,7 @@ export default StyleSheet.create({
   },
   listSmileyParentContainer: { flex: 1, justifyContent: 'center' },
   listSmileyContainer: { flexDirection: 'row', justifyContent: 'flex-end' },
-  listSmileyEachContainer: { marginLeft: 20, marginRight: 10 },
+  listSmileyEachContainer: { marginLeft: 20, marginRight: 10, },
   listSmiley: { height: 30, width: 30 },
   listSmileySelected: {
     height: 40,

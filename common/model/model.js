@@ -12,7 +12,7 @@ export const DailyItems = [
   {
     name: 'corridorSweeping',
     title: 'Corridor Sweeping',
-    status: 'Closed',
+    status: 'Completed',
     review: 'happy',
     apartmentID: 1,
     userID: 1,
@@ -98,7 +98,7 @@ export const MonthlyItems = [
   {
     name: 'floorScrubbing',
     title: 'Floor Scrubbing',
-    status: 'Closed',
+    status: 'Completed',
     review: null,
     apartmentID: 1,
     userID: 1,

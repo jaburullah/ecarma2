@@ -5,12 +5,12 @@ import Dashboard from '../DashBoard';
 
 const ManagerDashboard = ({ navigation, state }) => {
 
-  const onTouchTask = (type) => {
+  const onTouchTask = (type, tabName) => {
     if (type === 'ticket') {
       navigation.navigate(`manager_ticket_view`);
       return;
     }
-    navigation.navigate(`manager_task_view`);
+    navigation.navigate(`manager_task_view`, { tabName });
   };
 
   const showSmiley = (o) => {
@@ -37,7 +37,7 @@ const ManagerDashboard = ({ navigation, state }) => {
         return (
           <View key={`${o.name}_${i}`} style={styles.taskContainer}>
             <View style={styles.taskCountContainer}>
-              <TouchableOpacity onPress={() => { onTouchTask(i === 0 ? 'ticket' : 'task') }}>
+              <TouchableOpacity onPress={() => { onTouchTask((i === 0 ? 'ticket' : 'task'), o.name) }}>
                 <View style={styles.taskCount}>
                   <Text style={styles.taskTextTitle}>OPEN {i === 0 ? 'TICKET' : 'TASK'}</Text>
                   <Text style={styles.taskTextCount}>{o.openTicketCount}</Text>
