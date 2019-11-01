@@ -116,10 +116,10 @@ const Dashboard = (C) => {
             // })
 
 
-            const mapAppTickets = apartmentsID.map(v => db.collection('tickets').where('apartmentID', '==', v).get()) //.orderBy('modifiedDate', 'DESC')
-            const mapAppDaily = apartmentsID.map(v => db.collection('dailyTasks').where('apartmentID', '==', v).get())
-            const mapAppWeekly = apartmentsID.map(v => db.collection('weeklyTasks').where('apartmentID', '==', v).get())
-            const mapAppMonth = apartmentsID.map(v => db.collection('monthlyTasks').where('apartmentID', '==', v).get())
+            const mapAppTickets = apartmentsID.map(v => db.collection('tickets').where('apartmentID', '==', v).orderBy('modifiedDate', 'desc').get()) //.orderBy('modifiedDate', 'DESC')
+            const mapAppDaily = apartmentsID.map(v => db.collection('dailyTasks').where('apartmentID', '==', v).orderBy('modifiedDate', 'desc').get())
+            const mapAppWeekly = apartmentsID.map(v => db.collection('weeklyTasks').where('apartmentID', '==', v).orderBy('modifiedDate', 'desc').get())
+            const mapAppMonth = apartmentsID.map(v => db.collection('monthlyTasks').where('apartmentID', '==', v).orderBy('modifiedDate', 'desc').get())
 
             let pT = Promise.all(mapAppTickets);
             let pD = Promise.all(mapAppDaily);

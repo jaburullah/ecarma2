@@ -15,28 +15,6 @@ const Login = ({ navigation }) => {
   const appModel = navigation.getScreenProps();
   const usersRef = firebase.firestore().collection('users');
 
-  // const db = firebase.firestore();
-  // let batch = db.batch();
-  // db.collection('dailyTasks').get().then(doc => {
-  //   doc.forEach(d => {
-  //     const dailyTask = db.doc(`dailyTasks/${d.id}`);
-  //     batch.update(dailyTask, { review: "", status: "Open", modifiedDate: new Date() })
-  //   }
-  //   );
-  //   return batch
-  //     .commit();
-  //   //return res.json(doc);
-  // })
-  //   .then(() => {
-  //     console.log('Daily Tasks Updated Successfully');
-  //     //return res.json({ message: 'Notifications marked read' });
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-  //     //return res.status(500).json({ error: err.code });
-  //   });
-
-
   // const apartmentRef = firebase.firestore().collection('apartments');
   // const dailyTasksRef = firebase.firestore().collection('dailyTasks');
   // const weeklyTasksRef = firebase.firestore().collection('weeklyTasks');

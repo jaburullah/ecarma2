@@ -21,7 +21,7 @@ const InfiniteScroll = (C, options = { limit: 10, collection: null }) => {
             try {
                 setState(c => ({ ...c, isLoading: true }));
 
-                const promiseData = Promise.all(database.collection(options.collection).where('apartmentID', '==', appModel.apartmentID).get());
+                const promiseData = Promise.all(database.collection(options.collection).where('apartmentID', '==', appModel.apartmentID).orderBy('modifiedDate', 'desc').get());
                 let dd = [];
                 promiseData.then(data => {
 
