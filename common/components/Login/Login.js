@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   View,
   TextInput,
@@ -6,81 +6,40 @@ import {
   Image,
   StatusBar,
   ToastAndroid,
+  AsyncStorage,
+  ScrollView,
 } from 'react-native';
 import styles from './styles';
 import firebase from 'react-native-firebase';
 import { DailyItems, WeeklyItems, MonthlyItems } from '../../model/model';
+const db = firebase.firestore();
 
 const Login = ({ navigation }) => {
+
+  const _storeData = async (v) => {
+    try {
+      await AsyncStorage.clear();
+      await AsyncStorage.setItem('ecarma_user_mobile_no', v);
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('ecarma_user_mobile_no');
+      if (value !== null) {
+        // We have data!!
+        setMobileNo(value)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
   const appModel = navigation.getScreenProps();
-  const usersRef = firebase.firestore().collection('users');
 
-  // const apartmentRef = firebase.firestore().collection('apartments');
-  // const dailyTasksRef = firebase.firestore().collection('dailyTasks');
-  // const weeklyTasksRef = firebase.firestore().collection('weeklyTasks');
-  // const monthlyTasksRef = firebase.firestore().collection('monthlyTasks');
-
-  // apartmentRef.get().then(docs => {
-  //   docs.forEach(doc => {
-  //     DailyItems.forEach((v) => {
-  //       v.apartmentID = doc.id;
-
-  //       dailyTasksRef.add(v);
-  //     });
-
-  //     WeeklyItems.forEach((v) => {
-  //       v.apartmentID = doc.id;
-  //       weeklyTasksRef.add(v);
-  //     });
-
-  //     MonthlyItems.forEach((v) => {
-  //       v.apartmentID = doc.id;
-  //       monthlyTasksRef.add(v);
-  //     });
-  //     console.log(DailyItems, WeeklyItems, MonthlyItems);
-  //   });
-
-
-  // }).catch(e => console.log(e));
-
-
-
-
-
-  // const weeklyTickets = firebase.firestore().collection('weeklyTickets');
-  // const monthlyTickets = firebase.firestore().collection('monthlyTickets');
-
-  // DailyItems.forEach((o, i) => {
-  //   dailyTickets.add(o);
-  // });
-  // WeeklyItems.forEach((o, i) => {
-  //   weeklyTickets.add(o);
-  // });
-  // MonthlyItems.forEach((o, i) => {
-  //   monthlyTickets.add(o);
-  // });
-
-  // dailyTickets
-  //   .get()
-  //   .then(doc => {
-  //     console.log(doc, doc._docs[0].data());
-  //   })
-  //   .catch(e => console.log(e));
-
-  // weeklyTickets
-  //   .get()
-  //   .then(doc => {
-  //     console.log(doc, doc._docs[0].data());
-  //   })
-  //   .catch(e => console.log(e));
-
-  // monthlyTickets
-  // .get()
-  // .then(doc => {
-  //   console.log(doc, doc._docs[0].data());
-  // })
-  // .catch(e => console.log(e));
-
+  const [mobileNo, setMobileNo] = React.useState("")
   const refFirstDigit = React.useRef(),
     refSecondDigit = React.useRef(),
     refThirdDigit = React.useRef(),
@@ -101,33 +60,32 @@ const Login = ({ navigation }) => {
     if (pwd.indexOf('') >= 0) {
       return;
     }
+    else if (mobileNo.length > 10 || mobileNo.length < 10) {
+      ToastAndroid.show('Invalid mobile no', ToastAndroid.SHORT);
+      return;
+    }
 
     let v = pwd.reduce(((a, c) => a + c), '');
-
-    let query = usersRef.where('password', '==', v).get()
+    _storeData(mobileNo);
+    db.collection('users').where('mobileNo', '==', mobileNo).get()
       .then(snapshot => {
         if (snapshot.empty) {
           ToastAndroid.show('Invalid authentication', ToastAndroid.SHORT);
           return;
         }
-
         snapshot.forEach(doc => {
-          // console.log(doc.id, '=>', doc.data());
           let d = doc.data();
-          d.id = doc.id;
-          appModel.login(d);
-
-          if (appModel.isSecretary()) {
-            // firebase
-            //   .auth()
-            //   .signInAnonymously()
-            //   .then(() => {
-            //     console.log('login');
-            //   })
-            //   .catch(error => console.log(error));
-            navigation.navigate('secretary_dashboard');
-          } else if (appModel.isManager()) {
-            navigation.navigate('manager_dashboard');
+          if (d.password !== v) {
+            ToastAndroid.show('Invalid password', ToastAndroid.SHORT);
+          }
+          else {
+            d.id = doc.id;
+            appModel.login(d);
+            if (appModel.isSecretary()) {
+              navigation.navigate('secretary_dashboard');
+            } else if (appModel.isManager()) {
+              navigation.navigate('manager_dashboard');
+            }
           }
         });
       })
@@ -136,6 +94,10 @@ const Login = ({ navigation }) => {
       });
 
   };
+
+  React.useEffect(() => {
+    _retrieveData();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -147,6 +109,15 @@ const Login = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputParentContainer}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Mobile No."
+            keyboardType="numeric"
+            value={mobileNo}
+            onChangeText={(v) => setMobileNo(v)}
+            style={styles.txtMobileNo}
+          />
+        </View>
         <View style={styles.inputContainer}>
           <TextInput
             ref={refFirstDigit}
@@ -193,7 +164,7 @@ const Login = ({ navigation }) => {
           <Text style={styles.forgotPasswordText}>Forgot Password ?</Text>
         </View>
         <View style={styles.versionDetailContainer}>
-          <Text style={styles.versionDetail}>version 0.1.7</Text>
+          <Text style={styles.versionDetail}>version 0.1.8</Text>
         </View>
       </View>
     </View>

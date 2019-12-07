@@ -7,7 +7,7 @@
  */
 
 import React, { Fragment } from 'react';
-import { StyleSheet, StatusBar, Animated, Easing } from 'react-native';
+import { StyleSheet, StatusBar, Animated, Easing, ToastAndroid } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
@@ -27,44 +27,65 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { model } from './common/model/model'
 import ManagerTaskView from './common/components/Task/View/Manager/ManagerTaskView';
 import ManagerTicketView from './common/components/Ticket/View/ManagerTicketView';
+import UserProfile from './common/components/UserProfile/UserProfile';
 
 
-const navigationOptions = {
-  title: '',
-  drawerLabel: '',
-  headerLeft: (
-    <Icon
-      style={{ paddingLeft: 10 }}
-      name="md-menu"
-      size={30}
-      color="#fff"
-      onPress={() => console.log('menu')}
-    />
-  ),
-  headerRight: [
-    <Icon
-      key={'search'}
-      style={{ paddingRight: 10 }}
-      name="md-search"
-      color="#fff"
-      size={30}
-      onPress={() => console.log('search')}
-    />,
-    <Icon
-      key={'notifications'}
-      style={{ paddingRight: 10 }}
-      name="md-notifications"
-      color="#fff"
-      size={30}
-      onPress={() => console.log('bell')}
-    />,
-  ],
-  headerStyle: {
-    backgroundColor: '#482114',
-    elevation: 0,
-  },
-  headerTintColor: '#fff',
-};
+const navigationOptions = ({ navigation }) => {
+
+
+  return {
+    title: '',
+    drawerLabel: '',
+    headerLeft: (
+      <Icon
+        style={{ paddingLeft: 10 }}
+        name="md-menu"
+        size={30}
+        color="#fff"
+        onPress={() => console.log('menu')}
+      />
+    ),
+    headerRight: [
+      <Icon
+        key={'profile'}
+        style={{ paddingRight: 10 }}
+        name="md-person"
+        color="#fff"
+        size={30}
+        onPress={() => {
+          if (!AppModel.getUserID()) {
+            ToastAndroid.show("Please login..", ToastAndroid.SHORT)
+          }
+          else {
+            navigation.navigate('user_profile');
+          }
+        }
+        }
+      />,
+      <Icon
+        key={'search'}
+        style={{ paddingRight: 10 }}
+        name="md-search"
+        color="#fff"
+        size={30}
+        onPress={() => console.log('search')}
+      />,
+      <Icon
+        key={'notifications'}
+        style={{ paddingRight: 10 }}
+        name="md-notifications"
+        color="#fff"
+        size={30}
+        onPress={() => console.log('bell')}
+      />,
+    ],
+    headerStyle: {
+      backgroundColor: '#482114',
+      elevation: 0,
+    },
+    headerTintColor: '#fff',
+  };
+}
 
 const transitionConfig = () => {
   return {
@@ -106,7 +127,6 @@ const AppNavigator = createStackNavigator({
     screen: Login,
     navigationOptions: navigationOptions
   },
-
   manager_dashboard: {
     screen: ManagerDashboard,
     navigationOptions: navigationOptions,
@@ -119,8 +139,10 @@ const AppNavigator = createStackNavigator({
     screen: ManagerTicketView,
     navigationOptions: navigationOptions,
   },
-
-
+  user_profile: {
+    screen: UserProfile,
+    navigationOptions: navigationOptions,
+  },
   secretary_dashboard: {
     screen: SecretaryDashboard,
     navigationOptions: navigationOptions,
@@ -133,12 +155,11 @@ const AppNavigator = createStackNavigator({
     screen: SecretaryTicketView,
     navigationOptions: navigationOptions,
   },
-  // ticket: {
+
+  // create_ticket: {
   //   screen: CreateTicket,
   //   navigationOptions: navigationOptions,
   // },
-
-
 }, {
   transitionConfig
 });

@@ -10,14 +10,14 @@ export default StyleSheet.create({
   rowStyle2: { flex: 1, flexDirection: 'row', justifyContent: 'flex-start' },
   headerTitle: { fontSize: 20, fontWeight: 'bold' },
   title: { fontSize: 16, fontWeight: 'normal' },
-  rowStyle4: { flex: 4 },
+  rowStyle4: { flex: 3 },
   magrinBottom10: { marginBottom: 10 },
   textArea: {
     borderStyle: 'solid',
     fontSize: 16,
     borderWidth: 1,
     borderColor: '#dbd9d9',
-    maxHeight: 200,
+    flex: 1
   },
   rowStyle3: {
     flex: 2,
@@ -25,16 +25,18 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   flex1: {
-    flex: 1
+    marginRight: 10
   },
   radioButtonsContainer: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center'
   },
   radioButtons: {
-    flex: 1,
+
     flexDirection: 'row',
     alignItems: 'center',
+
   },
   radioButtonText: { marginLeft: 6, fontSize: 14 },
 

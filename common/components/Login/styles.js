@@ -16,6 +16,15 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  txtMobileNo: {
+    fontSize: 20,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginLeft: 20,
+    padding: 5,
+    width: 200,
+    marginVertical: 25,
+  },
   txtPassword: {
     fontSize: 20,
     borderColor: 'gray',

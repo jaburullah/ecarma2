@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView, Animated, Easing } fro
 import styles from './styles';
 import Dashboard from '../DashBoard';
 
+
 const ManagerDashboard = ({ navigation, state }) => {
 
   const onTouchTask = (type, tabName) => {

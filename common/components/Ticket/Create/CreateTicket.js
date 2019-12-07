@@ -186,7 +186,7 @@ const CreateTicket = ({ navigation }) => {
         <View style={styles.rowStyle1}>
           <Text style={styles.headerTitle}>Create New Ticket</Text>
         </View>
-        <View style={[styles.rowStyle1, styles.radioButtonsContainer]}>
+        <View style={[styles.radioButtonsContainer]}>
           {getRadioButton()}
         </View>
         <View style={styles.rowStyle1}>

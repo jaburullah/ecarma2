@@ -167,6 +167,15 @@ export const model = m => {
       return _model.id;
     },
 
+    getUser() {
+      return {
+        userID: _model.id,
+        password: _model.password,
+        roles: _model.roles,
+        mobileNo: _model.mobileNo,
+        apartmentID: _model.apartmentID,
+      }
+    },
     getApartmentsID: () => {
       return _model.apartmentID;
     },
